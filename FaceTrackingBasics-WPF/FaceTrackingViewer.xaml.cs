@@ -378,6 +378,11 @@ namespace FaceTrackingBasics
                         //Debug.WriteLine("X: "+shape3D[FeaturePoint.InnerCornerLeftEye].X);
                         //Debug.WriteLine("Y: " + shape3D[FeaturePoint.InnerCornerLeftEye].Y);
                         Debug.WriteLine("Z: " + shape3D[FeaturePoint.InnerCornerLeftEye].Z);
+                        double theta;
+                        double alpha;
+                        Vector3DF n = new Vector3DF();
+                        Vector3DF reference;
+                        Calc.calculateAngle(shape3D[FeaturePoint.InnerCornerLeftEye], reference, out theta, out alpha, out n);
                     }
                 }
             }
