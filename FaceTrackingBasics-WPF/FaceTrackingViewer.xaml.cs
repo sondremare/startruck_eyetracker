@@ -383,7 +383,9 @@ namespace FaceTrackingBasics
                         double thetaDegrees = (theta * 180) / Math.PI;
                         double alphaDegrees = (alpha * 180) / Math.PI;
                         //Debug.WriteLine("X: " + shape3D[FeaturePoint.InnerCornerLeftEye].X + ", Y: " + shape3D[FeaturePoint.InnerCornerLeftEye].Y + ", Z: " + shape3D[FeaturePoint.InnerCornerLeftEye].Z);
-                        Debug.WriteLine("Theta: " + thetaDegrees + ", Alpha: " + alphaDegrees); 
+                        Debug.WriteLine("Theta: " + thetaDegrees + ", Alpha: " + alphaDegrees);
+                        MainWindow.setAngleX(theta);
+                        MainWindow.setAngleY(alpha);
                     }
                 }
             }

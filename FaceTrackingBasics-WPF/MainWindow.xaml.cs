@@ -30,8 +30,8 @@ namespace FaceTrackingBasics
         private WriteableBitmap colorImageWritableBitmap;
         private byte[] colorImageData;
         private ColorImageFormat currentColorImageFormat = ColorImageFormat.Undefined;
-        private int m_angleSliderY = 90;
-        private int m_angleSliderX = 90;
+        public static int m_angleSliderY = 90;
+        public static int m_angleSliderX = 90;
         readonly ICollection<SerialPort> m_ports = new List<SerialPort>();
         private readonly Thread m_servoThread;
 
@@ -61,6 +61,16 @@ namespace FaceTrackingBasics
             m_servoThread.Start();
         }
 
+        public static void setAngleX(double value)
+        {
+            m_angleSliderX = (int)value;
+        }
+
+        public static void setAngleY(double value)
+        {
+            m_angleSliderY = (int)value;
+        }
+
         private void AngleChangeX(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             m_angleSliderX = (int)((Slider)sender).Value;
@@ -83,8 +93,24 @@ namespace FaceTrackingBasics
             var currentValueY = m_angleSliderY;
             while (true)
             {
+                if (m_angleSliderX < 20)
+                {
+                    m_angleSliderX = 20;
+                }
+                else if (m_angleSliderX > 160)
+                {
+                    m_angleSliderX = 160;
+                }
+                if (m_angleSliderY < 20)
+                {
+                    m_angleSliderY = 20;
+                }
+                else if (m_angleSliderY > 160)
+                {
+                    m_angleSliderY = 160;
+                }
                 if (currentValueX == m_angleSliderX && currentValueY == m_angleSliderY) continue;
-
+                
                 foreach (var serialPort in m_ports)
                 {
                     if (currentValueX != m_angleSliderX)
