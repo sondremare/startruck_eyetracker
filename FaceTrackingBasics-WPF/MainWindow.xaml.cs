@@ -4,6 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Ports;
+using System.Threading;
+using System.Windows.Controls;
+
 namespace FaceTrackingBasics
 {
     using System;
@@ -24,6 +30,10 @@ namespace FaceTrackingBasics
         private WriteableBitmap colorImageWritableBitmap;
         private byte[] colorImageData;
         private ColorImageFormat currentColorImageFormat = ColorImageFormat.Undefined;
+        private int m_angleSliderY = 90;
+        private int m_angleSliderX = 90;
+        readonly ICollection<SerialPort> m_ports = new List<SerialPort>();
+        private readonly Thread m_servoThread;
 
         public MainWindow()
         {
@@ -35,7 +45,74 @@ namespace FaceTrackingBasics
             sensorChooser.KinectChanged += SensorChooserOnKinectChanged;
 
             sensorChooser.Start();
+
+            // Get a list of serial port names.
+            var portNames = SerialPort.GetPortNames();
+
+            Debug.WriteLine("The following serial ports were found:");
+
+            // Display each port name to the console. 
+            foreach (var port in portNames)
+            {
+                Debug.WriteLine(port);
+                m_ports.Add(new SerialPort(port));
+            }
+            m_servoThread = new Thread(RunServo);
+            m_servoThread.Start();
         }
+
+        private void AngleChangeX(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            m_angleSliderX = (int)((Slider)sender).Value;
+        }
+
+        private void AngleChangeY(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            m_angleSliderY = (int)((Slider)sender).Value;
+        }
+
+        // 4 way range about 30-175
+        // 2 way range about 11-167
+        private void RunServo()
+        {
+            foreach (var serialPort in m_ports)
+            {
+                serialPort.Open();
+            }
+            var currentValueX = m_angleSliderX;
+            var currentValueY = m_angleSliderY;
+            while (true)
+            {
+                if (currentValueX == m_angleSliderX && currentValueY == m_angleSliderY) continue;
+
+                foreach (var serialPort in m_ports)
+                {
+                    if (currentValueX != m_angleSliderX)
+                    {
+                        currentValueX = m_angleSliderX;
+                        serialPort.Write("X" + currentValueX);
+                        WaitForResponse(serialPort);
+                    }
+                    if (currentValueY != m_angleSliderY)
+                    {
+                        currentValueY = m_angleSliderY;
+                        serialPort.Write("Y" + currentValueY);
+                        WaitForResponse(serialPort);
+                    }
+
+                }
+
+            }
+        }
+
+        private void WaitForResponse(SerialPort port)
+        {
+            var buffer = new byte[1];
+            var received = 0;
+            while (received < 1)
+                received += port.Read(buffer, 0, 1);
+        }
+
 
         private void SensorChooserOnKinectChanged(object sender, KinectChangedEventArgs kinectChangedEventArgs)
         {
@@ -92,6 +169,11 @@ namespace FaceTrackingBasics
 
         private void WindowClosed(object sender, EventArgs e)
         {
+            m_servoThread.Abort();
+            foreach (var serialPort in m_ports)
+            {
+                serialPort.Close();
+            }
             sensorChooser.Stop();
             faceTrackingViewer.Dispose();
         }
