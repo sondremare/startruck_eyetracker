@@ -14,9 +14,11 @@ namespace FaceTrackingBasics
             Vector3DF normalizedEyePosition = Normalize(eyePosition);
             Vector3DF normalizedReference = Normalize(reference);
 
-            n.X = (normalizedEyePosition.X + normalizedReference.X) / 2;
-            n.Y = (normalizedEyePosition.Y + normalizedReference.Y) / 2;
-            n.Z = (normalizedEyePosition.Z + normalizedReference.Z) / 2;
+            float nX = (normalizedEyePosition.X + normalizedReference.X) / 2;
+            float nY = (normalizedEyePosition.Y + normalizedReference.Y) / 2;
+            float nZ = (normalizedEyePosition.Z + normalizedReference.Z) / 2;
+
+            n = new Vector3DF(nX, nY, nZ);
 
             Vector3DF zNorm = new Vector3DF(0, 0, 1);
             Vector3DF yNorm = new Vector3DF(0, 1, 0);
@@ -24,8 +26,7 @@ namespace FaceTrackingBasics
             Vector3DF normalizedN = Normalize(n);
 
             theta = Math.Acos(DotProduct(normalizedN, zNorm));
-            alpha = Math.Acos(DotProduct(normalizedN, yNorm));
- 
+            alpha = Math.Acos(DotProduct(normalizedN, yNorm)); 
         }
 
         public static Vector3DF Normalize(Vector3DF input)
