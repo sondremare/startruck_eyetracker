@@ -1,3 +1,12 @@
 .idea/
 *.iml
 out/
+*.suo
+FaceTrackingBasics-WPF/bin/
+FaceTrackingBasics-WPF/obj/
+Microsoft.Kinect.Toolkit/bin/
+Microsoft.Kinect.Toolkit/obj/
+Microsoft.Kinect.Toolkit.FaceTracking/bin/
+Microsoft.Kinect.Toolkit.FaceTracking/obj/
+
+
