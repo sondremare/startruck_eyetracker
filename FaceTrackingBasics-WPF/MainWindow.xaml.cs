@@ -69,7 +69,7 @@ namespace FaceTrackingBasics
 
         public static void setAngleY(double value)
         {
-            m_angleSliderY = (int)(value+0.5);
+            m_angleSliderY = (int)(value+0.5)-5;
             Debug.WriteLine("y: " + m_angleSliderY);
         }
 
@@ -87,6 +87,11 @@ namespace FaceTrackingBasics
         // 2 way range about 11-167
         private void RunServo()
         {
+            const int minAngleX = 40;
+            const int maxAngleX = 140;
+            const int minAngleY = 40;
+            const int maxAngleY = 90;
+            const int midAngleY = 85;
             foreach (var serialPort in m_ports)
             {
                 serialPort.Open();
@@ -95,21 +100,21 @@ namespace FaceTrackingBasics
             var currentValueY = m_angleSliderY;
             while (true)
             {
-                if (m_angleSliderX < 20)
+                if (currentValueX < minAngleX)
                 {
-                    m_angleSliderX = 20;
+                    currentValueX = minAngleX;
                 }
-                else if (m_angleSliderX > 160)
+                else if (m_angleSliderX > maxAngleX)
                 {
-                    m_angleSliderX = 160;
+                    currentValueX = maxAngleX;
                 }
-                if (m_angleSliderY < 20)
+                if (currentValueY < minAngleY)
                 {
-                    m_angleSliderY = 20;
+                    currentValueY = minAngleY;
                 }
-                else if (m_angleSliderY > 160)
+                else if (currentValueY > maxAngleY)
                 {
-                    m_angleSliderY = 160;
+                    currentValueY = maxAngleY;
                 }
                 if (currentValueX == m_angleSliderX && currentValueY == m_angleSliderY) continue;
                 
@@ -117,15 +122,15 @@ namespace FaceTrackingBasics
                 {
                     if (currentValueX != m_angleSliderX)
                     {
-                        currentValueX = m_angleSliderX;
                         serialPort.Write("X" + currentValueX);
                         WaitForResponse(serialPort);
+                        currentValueX = m_angleSliderX;
                     }
                     if (currentValueY != m_angleSliderY)
                     {
-                        currentValueY = m_angleSliderY;
-                        serialPort.Write("Y" + currentValueY);
+                        serialPort.Write("Y" + (currentValueY));
                         WaitForResponse(serialPort);
+                        currentValueY = m_angleSliderY;
                     }
 
                 }
