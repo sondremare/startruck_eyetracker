@@ -380,12 +380,13 @@ namespace FaceTrackingBasics
                         Vector3DF n = new Vector3DF();
                         Vector3DF reference = new Vector3DF(0, 0, 10);
                         Calc.calculateAngle(shape3D[FeaturePoint.InnerCornerLeftEye], reference, out theta, out alpha, out n);
+                        
                         double thetaDegrees = (theta * 180) / Math.PI;
                         double alphaDegrees = (alpha * 180) / Math.PI;
                         //Debug.WriteLine("X: " + shape3D[FeaturePoint.InnerCornerLeftEye].X + ", Y: " + shape3D[FeaturePoint.InnerCornerLeftEye].Y + ", Z: " + shape3D[FeaturePoint.InnerCornerLeftEye].Z);
                         Debug.WriteLine("Theta: " + thetaDegrees + ", Alpha: " + alphaDegrees);
-                        MainWindow.setAngleX(theta);
-                        MainWindow.setAngleY(alpha);
+                        MainWindow.setAngleX(thetaDegrees);
+                        MainWindow.setAngleY(alphaDegrees);
                     }
                 }
             }

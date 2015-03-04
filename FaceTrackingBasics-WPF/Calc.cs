@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Microsoft.Kinect.Toolkit.FaceTracking;
 
 namespace FaceTrackingBasics
@@ -11,22 +13,25 @@ namespace FaceTrackingBasics
         //public static void calculateAngle(Vector3DF position, double theta, double alpha, Vector3DF n)
         public static void calculateAngle(Vector3DF eyePosition, Vector3DF reference, out double theta, out double alpha, out Vector3DF n)
         {
+            
             Vector3DF normalizedEyePosition = Normalize(eyePosition);
             Vector3DF normalizedReference = Normalize(reference);
 
-            float nX = (normalizedEyePosition.X + normalizedReference.X) / 2;
-            float nY = (normalizedEyePosition.Y + normalizedReference.Y) / 2;
-            float nZ = (normalizedEyePosition.Z + normalizedReference.Z) / 2;
+            float nX = (normalizedEyePosition.X);// + normalizedReference.X) / 2;
+            float nY = (normalizedEyePosition.Y);// + normalizedReference.Y) / 2;
+            float nZ = (normalizedEyePosition.Z);// + normalizedReference.Z) / 2;
+
+            Debug.WriteLine("Xe: " + nX + " Ye: " + nY + " Ze: " + nZ);
 
             n = new Vector3DF(nX, nY, nZ);
 
-            Vector3DF zNorm = new Vector3DF(0, 0, 1);
+            Vector3DF zNorm = new Vector3DF(-1, 0, 0);
             Vector3DF yNorm = new Vector3DF(0, 1, 0);
-
+            
             Vector3DF normalizedN = Normalize(n);
-
+            
             theta = Math.Acos(DotProduct(normalizedN, zNorm));
-            alpha = Math.Acos(DotProduct(normalizedN, yNorm)); 
+            alpha = Math.Acos(DotProduct(normalizedN, yNorm));
         }
 
         public static Vector3DF Normalize(Vector3DF input)

@@ -28,11 +28,11 @@
         </DockPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center">
             <Grid Name="MainGrid" Width="640" Height="480">
-                <Image Name="ColorImage" Margin="0,0,52,39"/>
+                <Image Name="ColorImage" Margin="0,0,0,0"/>
                 <local:FaceTrackingViewer x:Name="faceTrackingViewer" HorizontalAlignment="Left" Width="640" />
                 <DockPanel Margin="0,0,52,10" Height="24" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="240">
                     <TextBox Text="{Binding ElementName=slValueX, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
-                    <Slider Maximum="140" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Name="slValueX" ValueChanged="AngleChangeX" Minimum="40" Value="90" />
+                    <Slider Maximum="140" TickPlacement="BottomRight" IsSnapToTickEnabled="True" Name="slValueX" ValueChanged="AngleChangeX" Minimum="40" Value="90" TickFrequency="0.1" />
                 </DockPanel>
                 <DockPanel Margin="0,0,-95,110" Height="24" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Right" Width="240">
                     <DockPanel.RenderTransform>

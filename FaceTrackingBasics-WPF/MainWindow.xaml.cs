@@ -63,12 +63,14 @@ namespace FaceTrackingBasics
 
         public static void setAngleX(double value)
         {
-            m_angleSliderX = (int)value;
+            m_angleSliderX = ((int)(value+0.5));
+            Debug.WriteLine("x: " + m_angleSliderX);
         }
 
         public static void setAngleY(double value)
         {
-            m_angleSliderY = (int)value;
+            m_angleSliderY = (int)(value+0.5);
+            Debug.WriteLine("y: " + m_angleSliderY);
         }
 
         private void AngleChangeX(object sender, RoutedPropertyChangedEventArgs<double> e)
