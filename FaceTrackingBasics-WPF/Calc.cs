@@ -15,8 +15,8 @@ namespace FaceTrackingBasics
         public static void calculateAngle(Vector3DF eyePosition, Vector3DF reference, out double theta, out double alpha, out Vector3DF n)
         {
             var mirrorPos = new Vector3D(0.0, 0.0, 0.0);
-            var kinectPos = new Vector3D(0.3, 0.0, 0.2);
-            var kinectOrientation = new Vector3D(0.0, 0.0, 1.0);
+            var kinectPos = new Vector3D(1.0, 0.0, 0.0);
+            var kinectOrientation = new Vector3D(-1.0, 0.0, 1.0);
             var eyePos = new Vector3D(-eyePosition.X, eyePosition.Y, eyePosition.Z);
             var unitVectorI = new Vector3D(1,0,0);
             var unitVectorJ = new Vector3D(0,1,0);

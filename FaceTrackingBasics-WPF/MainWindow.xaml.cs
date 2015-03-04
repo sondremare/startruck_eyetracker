@@ -69,7 +69,7 @@ namespace FaceTrackingBasics
 
         public static void setAngleY(double value)
         {
-            m_angleSliderY = (int)(value+0.5)-5;
+            m_angleSliderY = (int)(value+0.5)-13;
             Debug.WriteLine("y: " + m_angleSliderY);
         }
 
