@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using Microsoft.Kinect;
 using Microsoft.Kinect.Toolkit.FaceTracking;
 
 namespace FaceTrackingBasics
@@ -16,7 +17,7 @@ namespace FaceTrackingBasics
         {
             var mirrorPos = new Vector3D(0.0, 0.0, 0.0);
             var kinectPos = new Vector3D(1.0, 0.0, 0.0);
-            var kinectOrientation = new Vector3D(-1.0, 0.0, 1.0);
+            var kinectOrientation = new Vector3D(0.0, 0.0, 1.0);
             var eyePos = new Vector3D(-eyePosition.X, eyePosition.Y, eyePosition.Z);
             var unitVectorI = new Vector3D(1,0,0);
             var unitVectorJ = new Vector3D(0,1,0);
@@ -38,10 +39,10 @@ namespace FaceTrackingBasics
             newReference.Normalize();
             var mirrorNormalPLane = (relativeEyePos + newReference) / 2;
             
-            var zNorm = new Vector3D(1, 0, 0);
+            var xNorm = new Vector3D(1, 0, 0);
             var yNorm = new Vector3D(0, 1, 0);
             
-            theta = Math.Acos(Vector3D.DotProduct(mirrorNormalPLane, zNorm));
+            theta = Math.Acos(Vector3D.DotProduct(mirrorNormalPLane, xNorm));
             alpha = Math.Acos(Vector3D.DotProduct(mirrorNormalPLane, yNorm));
 
             n = new Vector3DF(0,0,0);
