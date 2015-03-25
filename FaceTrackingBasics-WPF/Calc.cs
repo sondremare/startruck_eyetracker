@@ -13,10 +13,10 @@ namespace FaceTrackingBasics
     class Calc
     {
         //public static void calculateAngle(Vector3DF position, double theta, double alpha, Vector3DF n)
-        public static void calculateAngle(Vector3DF eyePosition, Vector3DF reference, out double theta, out double alpha, out Vector3DF n)
+        public static void calculateAngle(Vector3DF kinectPos3DF, Vector3DF eyePosition, Vector3DF reference, out double theta, out double alpha, out Vector3DF n)
         {
-            var mirrorPos = new Vector3D(0.0, 0.0, 0.0);
-            var kinectPos = new Vector3D(1.0, 0.0, 0.0);
+
+            var kinectPos = new Vector3D(kinectPos3DF.X, kinectPos3DF.Y, kinectPos3DF.Z);
             var kinectOrientation = new Vector3D(0.0, 0.0, 1.0);
             var eyePos = new Vector3D(-eyePosition.X, eyePosition.Y, eyePosition.Z);
             var unitVectorI = new Vector3D(1,0,0);

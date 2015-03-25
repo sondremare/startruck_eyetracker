@@ -35,6 +35,9 @@ namespace FaceTrackingBasics
         readonly ICollection<SerialPort> m_ports = new List<SerialPort>();
         private readonly Thread m_servoThread;
 
+        public static int m_angleSliderA = 90;
+        public static int m_angleSliderB = 90;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -73,14 +76,28 @@ namespace FaceTrackingBasics
             Debug.WriteLine("y: " + m_angleSliderY);
         }
 
+        public static void setAngleA(double value)
+        {
+            m_angleSliderA = ((int)(value + 0.5));
+            Debug.WriteLine("a: " + m_angleSliderA);
+        }
+
+        public static void setAngleB(double value)
+        {
+            m_angleSliderB = (int)(value + 0.5) - 13;
+            Debug.WriteLine("b: " + m_angleSliderB);
+        }
+
         private void AngleChangeX(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             m_angleSliderX = (int)((Slider)sender).Value;
+            m_angleSliderA = (int)((Slider)sender).Value;
         }
 
         private void AngleChangeY(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             m_angleSliderY = (int)((Slider)sender).Value;
+            m_angleSliderB = (int)((Slider)sender).Value;
         }
 
         // 4 way range about 30-175
@@ -91,52 +108,74 @@ namespace FaceTrackingBasics
             const int maxAngleX = 140;
             const int minAngleY = 40;
             const int maxAngleY = 90;
-            const int midAngleY = 85;
+
+            const int minAngleA = 40;
+            const int maxAngleA = 140;
+            const int minAngleB = 40;
+            const int maxAngleB = 90;
+
             foreach (var serialPort in m_ports)
             {
                 serialPort.Open();
             }
             var currentValueX = m_angleSliderX;
             var currentValueY = m_angleSliderY;
+            var currentValueA = m_angleSliderA;
+            var currentValueB = m_angleSliderB;
             while (true)
             {
-                if (currentValueX < minAngleX)
-                {
-                    currentValueX = minAngleX;
-                }
-                else if (m_angleSliderX > maxAngleX)
-                {
-                    currentValueX = maxAngleX;
-                }
-                if (currentValueY < minAngleY)
-                {
-                    currentValueY = minAngleY;
-                }
-                else if (currentValueY > maxAngleY)
-                {
-                    currentValueY = maxAngleY;
-                }
-                if (currentValueX == m_angleSliderX && currentValueY == m_angleSliderY) continue;
+
                 
+                
+                if (currentValueY < minAngleY) currentValueY = minAngleY;                
+                else if (currentValueY > maxAngleY) currentValueY = maxAngleY;
+
+                if (currentValueA < minAngleA) currentValueA = minAngleA;
+                else if (currentValueA > maxAngleA) currentValueA = maxAngleA;
+
+                if (currentValueB < minAngleB) currentValueB = minAngleB;
+                else if (currentValueB > maxAngleB) currentValueB = maxAngleB;
+                                
                 foreach (var serialPort in m_ports)
                 {
                     if (currentValueX != m_angleSliderX)
                     {
-                        serialPort.Write("X" + currentValueX);
-                        WaitForResponse(serialPort);
+                        if (m_angleSliderX < minAngleX) serialPort.Write("X" + minAngleX);
+                        else if (m_angleSliderX > maxAngleX) serialPort.Write("X" + maxAngleX);
+                        else serialPort.Write("X" + m_angleSliderX);
                         currentValueX = m_angleSliderX;
+                        WaitForResponse(serialPort);                        
                     }
                     if (currentValueY != m_angleSliderY)
                     {
-                        serialPort.Write("Y" + (currentValueY));
-                        WaitForResponse(serialPort);
+                        if (m_angleSliderY < minAngleY) serialPort.Write("Y" + minAngleY);
+                        else if (m_angleSliderY > maxAngleY) serialPort.Write("X" + maxAngleY);
+                        else serialPort.Write("Y" + m_angleSliderY);
                         currentValueY = m_angleSliderY;
+                        WaitForResponse(serialPort);  
                     }
-
+                    if (currentValueA != m_angleSliderA)
+                    {
+                        if (m_angleSliderA < minAngleA) serialPort.Write("A" + minAngleA);
+                        else if (m_angleSliderA > maxAngleA) serialPort.Write("A" + maxAngleA);
+                        else serialPort.Write("A" + m_angleSliderA);
+                        currentValueA = m_angleSliderA;
+                        WaitForResponse(serialPort);  
+                    }
+                    if (currentValueB != m_angleSliderB)
+                    {
+                        if (m_angleSliderB < minAngleB) serialPort.Write("B" + minAngleB);
+                        else if (m_angleSliderB > maxAngleB) serialPort.Write("B" + maxAngleB);
+                        else serialPort.Write("B" + m_angleSliderB);
+                        currentValueB = m_angleSliderB;
+                        WaitForResponse(serialPort);  
+                    }
                 }
 
             }
         }
+
+       
 
         private void WaitForResponse(SerialPort port)
         {

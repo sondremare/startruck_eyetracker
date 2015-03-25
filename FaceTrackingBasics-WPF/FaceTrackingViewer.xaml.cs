@@ -375,18 +375,29 @@ namespace FaceTrackingBasics
 
                         this.facePoints = frame.GetProjected3DShape();
                         EnumIndexableCollection<FeaturePoint, Vector3DF> shape3D = frame.Get3DShape();
+
                         double theta;
                         double alpha;
+                        double thetaDegrees;
+                        double alphaDegrees;
                         Vector3DF n = new Vector3DF();
                         Vector3DF reference = new Vector3DF(0, 0, 1);
-                        Calc.calculateAngle(shape3D[FeaturePoint.InnerCornerLeftEye], reference, out theta, out alpha, out n);
                         
-                        double thetaDegrees = (theta * 180) / Math.PI;
-                        double alphaDegrees = (alpha * 180) / Math.PI;
+                        Calc.calculateAngle(new Vector3DF(1.0f, 0.0f, 0.0f), shape3D[FeaturePoint.InnerCornerLeftEye], reference, out theta, out alpha, out n);                        
+                        thetaDegrees = (theta * 180) / Math.PI;
+                        alphaDegrees = (alpha * 180) / Math.PI;
                         //Debug.WriteLine("X: " + shape3D[FeaturePoint.InnerCornerLeftEye].X + ", Y: " + shape3D[FeaturePoint.InnerCornerLeftEye].Y + ", Z: " + shape3D[FeaturePoint.InnerCornerLeftEye].Z);
                         Debug.WriteLine("Theta: " + thetaDegrees + ", Alpha: " + alphaDegrees);
                         MainWindow.setAngleX(thetaDegrees);
                         MainWindow.setAngleY(alphaDegrees);
+
+                        Calc.calculateAngle(new Vector3DF(-1.0f, 0.0f, 0.0f), shape3D[FeaturePoint.InnerCornerLeftEye], reference, out theta, out alpha, out n);
+                        thetaDegrees = (theta * 180) / Math.PI;
+                        alphaDegrees = (alpha * 180) / Math.PI;
+                        //Debug.WriteLine("X: " + shape3D[FeaturePoint.InnerCornerLeftEye].X + ", Y: " + shape3D[FeaturePoint.InnerCornerLeftEye].Y + ", Z: " + shape3D[FeaturePoint.InnerCornerLeftEye].Z);
+                        Debug.WriteLine("Theta: " + thetaDegrees + ", Alpha: " + alphaDegrees);
+                        MainWindow.setAngleA(thetaDegrees);
+                        MainWindow.setAngleB(alphaDegrees);
                     }
                 }
             }
